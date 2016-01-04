@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "capistrano3-ridgepole"
-  spec.version       = "0.0.1"
+  spec.version       = "0.0.2"
   spec.authors       = ["timakin"]
   spec.email         = ["timaki.st@gmail.com"]
   spec.summary       = %q{Capistrano3 plugin for ridgepole schema application}
