@@ -14,7 +14,15 @@ namespace :ridgepole do
   task :apply do
     on roles(fetch(:ridgepole_roles)) do
       within current_path do
-        execute :bundle, :exec, "#{ridgepole_base_command}"
+        if test "! [ -f #{fetch(:ridgepole_schema_file)} ]"
+          error "Schema file is not found. Default path to specify Schemafile is #{fetch(:ridgepole_schema_file)}"
+          exit 1
+        elsif test "! [ -f #{fetch(:ridgepole_config_file)} ]"
+          error "Config file is not found. Default path to specify database.yml configuration file is #{fetch(:ridgepole_config_file)}"
+          exit 1
+        else
+          execute :bundle, :exec, "#{ridgepole_base_command}"
+        end
       end
     end
   end
@@ -23,7 +31,15 @@ namespace :ridgepole do
   task :dry_run do
     on roles(fetch(:ridgepole_roles)) do
       within current_path do
-        execute :bundle, :exec, "#{ridgepole_base_command} --dry-run"
+        if test "! [ -f #{fetch(:ridgepole_schema_file)} ]"
+          error "Schema file is not found. Default path to specify Schemafile is #{fetch(:ridgepole_schema_file)}"
+          exit 1
+        elsif test "! [ -f #{fetch(:ridgepole_config_file)} ]"
+          error "Config file is not found. Default path to specify database.yml configuration file is #{fetch(:ridgepole_config_file)}"
+          exit 1
+        else
+          execute :bundle, :exec, "#{ridgepole_base_command} --dry-run"
+        end
       end
     end
   end
@@ -42,16 +58,3 @@ namespace :ridgepole do
   end
 end
 
-before "ridgepole:apply", "ridgepole:dry_run", "ridgepole:diff" do
-  unless test "[ -f #{fetch(:ridgepole_schema_file)} ]"
-    error "Schema file is not found. Default path to specify Schemafile is #{fetch(:ridgepole_schema_file)}"
-    exit 1
-  end
-
-  unless test "[ -f #{fetch(:ridgepole_config_file)} ]"
-    error "Config file is not found. Default path to specify database.yml configuration file is #{fetch(:ridgepole_config_file)}"
-    exit 1
-  end
-
-  logger.info "Loading Schemafile and database.yml for Ridgepole task"
-end
