@@ -29,10 +29,10 @@ namespace :ridgepole do
   end
 
   desc 'Show difference that will be created by schema application'
-   task :diff do
+  task :diff do
     on roles(fetch(:ridgepole_roles)) do
       within current_path do
-        execute :bundle, :exec, "ridgepole --diff #{fetch(:ridgepole_config_file)} #{fetch(:ridgepole_schema_file)}"
+        execute :bundle, :exec, "ridgepole --diff #{fetch(:ridgepole_config_file)} #{fetch(:ridgepole_schema_file)} -E #{fetch(:ridgepole_env)}"
       end
     end
   end
