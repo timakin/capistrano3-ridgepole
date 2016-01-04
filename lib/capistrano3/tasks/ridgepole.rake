@@ -43,13 +43,15 @@ namespace :ridgepole do
 end
 
 before "ridgepole:apply", "ridgepole:dry_run", "ridgepole:diff" do
-  if test "! [ -f #{fetch(:ridgepole_schema_file)} ]"
+  unless test "[ -f #{fetch(:ridgepole_schema_file)} ]"
     error "Schema file is not found. Default path to specify Schemafile is #{fetch(:ridgepole_schema_file)}"
     exit 1
-  elsif test "! [ -f #{fetch(:ridgepole_config_file)} ]"
+  end
+
+  unless test "[ -f #{fetch(:ridgepole_config_file)} ]"
     error "Config file is not found. Default path to specify database.yml configuration file is #{fetch(:ridgepole_config_file)}"
     exit 1
-  else
-    logger.info "Loading Schemafile and database.yml for Ridgepole task"
   end
+
+  logger.info "Loading Schemafile and database.yml for Ridgepole task"
 end
