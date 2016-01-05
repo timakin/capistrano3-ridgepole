@@ -14,7 +14,7 @@ gem 'capistrano3-ridgepole'
 
 ## Loading
 
-In your configuration file ( `deploy.rb` ) , load this capistrano3-ridgepole module.
+In your configuration file ( `Capfile` ) , load this capistrano3-ridgepole module.
 
 ```ruby
 require 'capistrano3/ridgepole'
